@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace chessLogic
+﻿namespace chessLogic
 {
     public class Rook : Piece
     {
         public override PieceType Type => PieceType.rook;
         public override Player Color { get; }
+
+        private static readonly Direction[] dirs = new Direction[]
+        {
+            Direction.North,
+            Direction.East,
+            Direction.South,
+            Direction.West
+        };
         public Rook(Player color)
         {
             Color = color;
@@ -19,6 +21,10 @@ namespace chessLogic
             Rook copy = new Rook(Color);
             copy.HasMoved = HasMoved;
             return copy;
+        }
+        public override IEnumerable<Move> GetMoves(Position from, Board board)
+        {
+            return MovePositionsInDirs(from, board, dirs).Select(to => new NormalMove(from, to));
         }
     }
 }
